@@ -17,7 +17,7 @@ contract voterTest {
     
     modifier onlyOwner() {msg.sender == owner;_;}
     event addedPlayer(uint PlayerId); 
-    address owner;
+    address external owner;
     uint public numPlayers;
     mapping(uint => Voter) voter;
     mapping(uint => Player) player;
@@ -36,7 +36,7 @@ contract voterTest {
     
     function vote(string memory name, uint playerId, uint age) public {
         if (player[PlayerId].exist == true) {
-            uint voterID = numPlayers++; //voterID is the return variable
+            uint voterID = numPlayers++; 
             voter[PlayerId] = Voter(name,age,PlayerId);
      }    
      }
