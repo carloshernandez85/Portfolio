@@ -16,7 +16,4 @@ contract Hello {
         greeting = _greeting;
     }
 
-
-
-
 }
