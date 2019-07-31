@@ -19,14 +19,8 @@ contract QuickCoin {
 
     function sendTokens(address receiver, uint amount) public {
         require(amount <= balances[msg.sender], "NOT UP IN HERE, FUCKFACE");
-        
-
+        balances[msg.sender] -= amount;
+        balances[receiver] += amount;
+        emit Sent(msg.sender, receiver, amount);
     }
-
-
-
-
-
-
-
-};
+}
