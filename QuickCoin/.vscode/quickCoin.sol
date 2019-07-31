@@ -12,7 +12,7 @@ contract QuickCoin {
     }
 
     function mintTokens(address receiver, uint amount) public {
-        require(msg.sender == minter);
+        require(msg.sender == minter, "not up in here");
         require(amount < 1e35);
         balances[receiver] += amount;
     }
