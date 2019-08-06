@@ -1,0 +1,108 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Counter </title>
+</head>
+<body>
+    <div>
+        <p id='counter-value'></p>
+        <button id='increment'>Increment</button>
+        <button id='decrement'>Decrement</button>
+        <button id='reset'>Reset</button>
+     </div>
+
+     
+     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+     <script src="./web3.min.js"></script>
+
+     
+    <script>
+         var contract;
+         
+         $(document).ready(function() {
+             initContract();
+             getValue();
+         })
+     
+         function initContract() {
+             //Web3 = require('web3');
+             web3 = new Web3(web3.currentProvider);
+             var address = "0x99764492b2e7bf7f163821911c1caddaa2662b67";
+             var abi = [
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "decrementCounter",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "incrementCounter",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "resetCounter",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getCounter",
+		"outputs": [
+			{
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+             
+             contract = new web3.eth.Contract(abi, address);
+            }
+     
+            function getValue() {
+                contract.methods.getCounter().call().then((result) => {
+                    $('#counter-value').html(result);
+                })
+            }
+
+            $('#increment').click(function(){
+                web3.eth.getAccounts().then(function(accounts) {
+                    var acct = accounts[0];
+                    return contract.methods.increment().send({from: acct});
+                    }).then(function(tx) {
+                    console.log(tx);
+                    var curr = parseInt($('#counter-value').html());
+                    $('#counter-value').html(curr +1);
+                    }).catch(function(err) {
+                        console.log(err);
+                    })
+                })
+    </script>
+    
+</body>
+</html>
