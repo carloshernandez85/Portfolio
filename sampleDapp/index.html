@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dApp Example</title>
+    
+    <link rel="stylesheet" type="text/css" href="main.css">
+    
+    <script src ="./dapp-eth/web3.min.js"></script>
+
+
+</head>
+<body>
+    <div class="member">
+        <h1>Cherry Creek Athletic Club Member</h1>
+        <h2 id="instructor"></h2>
+
+        <label for="name" class="col-lg-2 control-label">Member name</label>
+        <input id="name" class="text">
+
+        <label for="name" class="col-lg-2 control-label">Member age</label>
+        <input id="name" class="text">
+
+        <button id="button">Update Instructor</button>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+        var voteContract = new web3.eth.Contract([
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_age",
+				"type": "uint256"
+			},
+			{
+				"name": "_name",
+				"type": "string"
+			}
+		],
+		"name": "setMember",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getMember",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+], '0xfb2e0cfbb230135bcecbbcf132e6a27048fe870c');
+    
+
+    voteContract.getMember(function(error, result) {
+        if(!error) {
+            $("#member").html(result[0]+' ('+result[1]+' years old)');
+        } else
+        console.log(error);
+    });
+
+    $("#button").click(function() {
+        voteContract.setMember($("#name").val(), $("#age").val());
+    });
+    
+    </script>
+    
+</body>
+</html>
