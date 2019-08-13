@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="member">
-        <h1>Cherry Creek Athletic Club Member</h1>
+        <h1>Athletic Club Member?</h1>
         <h2 id="instructor"></h2>
 
         <label for="name" class="col-lg-2 control-label">Member name</label>
@@ -41,7 +41,7 @@
         web3.eth.defaultAccount = web3.eth.accounts[0];
 
         //Set Contract Abi
-        var contractAbi = [[
+        var contractAbi = [
 	{
 		"constant": true,
 		"inputs": [],
@@ -78,15 +78,13 @@
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-]]
+];
         
         //Set Contract Address
         var contractAddress = '0x0e53df94ff7b0e6c1977825b071f38a21248cbcd';
         
         //Set Contract
-        //var contract = new web3.eth.Contract(contractAbi).at(contractAddress);
-        
-        new web3.eth.Contract(contractAbi,[contractAddress]);
+         new web3.eth.Contract(contractAbi,[contractAddress]);
         
         //var memberLookupContract = new web3.eth.Contract([{"constant":true,"inputs":[],"name":"getMember","outputs":[{"name":"","type":"uint256"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_age","type":"uint256"},{"name":"_name","type":"string"}],"name":"setMember","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}], '0x0e53df94ff7b0e6c1977825b071f38a21248cbcd');
         
@@ -98,7 +96,8 @@
     });
 
     $("#button").click(function() {
-        memberLookupContract.setMember($("#name").val(), $("#age").val());
+        contract.setMember($("#name").val(), $("#age").val());
+        $("#loader").show();
     });
     
     </script>
