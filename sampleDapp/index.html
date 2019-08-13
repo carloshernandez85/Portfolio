@@ -37,27 +37,11 @@
             web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
         }
 
+        //Set Account
         web3.eth.defaultAccount = web3.eth.accounts[0];
 
-        var voteContract = new web3.eth.Contract([
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_age",
-				"type": "uint256"
-			},
-			{
-				"name": "_name",
-				"type": "string"
-			}
-		],
-		"name": "setMember",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
+        //Set Contract Abi
+        var contractAbi = [[
 	{
 		"constant": true,
 		"inputs": [],
@@ -75,11 +59,38 @@
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_age",
+				"type": "uint256"
+			},
+			{
+				"name": "_name",
+				"type": "string"
+			}
+		],
+		"name": "setMember",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
-], '0xfb2e0cfbb230135bcecbbcf132e6a27048fe870c');
-    
-
-    voteContract.getMember(function(error, result) {
+]]
+        
+        //Set Contract Address
+        var contractAddress = '0x0e53df94ff7b0e6c1977825b071f38a21248cbcd';
+        
+        //Set Contract
+        //var contract = new web3.eth.Contract(contractAbi).at(contractAddress);
+        
+        new web3.eth.Contract(contractAbi,[contractAddress]);
+        
+        //var memberLookupContract = new web3.eth.Contract([{"constant":true,"inputs":[],"name":"getMember","outputs":[{"name":"","type":"uint256"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_age","type":"uint256"},{"name":"_name","type":"string"}],"name":"setMember","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}], '0x0e53df94ff7b0e6c1977825b071f38a21248cbcd');
+        
+        contract.getMember(function(error, result) {
         if(!error) {
             $("#member").html(result[0]+' ('+result[1]+' years old)');
         } else
@@ -87,16 +98,10 @@
     });
 
     $("#button").click(function() {
-        voteContract.setMember($("#name").val(), $("#age").val());
+        memberLookupContract.setMember($("#name").val(), $("#age").val());
     });
     
     </script>
-    
-=======
-    <title>simple dapp</title>
-</head>
-<body>
-    <div class="root"></div>
 
 </body>
 </html>
