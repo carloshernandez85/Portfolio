@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+
+    <title>QuickDapp2</title>
+</head>
+<body>
+    
+    <div>
+        <h1>$Amount in account$</h1>
+        <h2>Instructions:</h2>
+        <h3>1.) Have MetaMask installed (using Rinkeby)</h3>
+        <h3>2.) Deposit/Withdraw (I used 'int' as opposed to 'uint') amount desired into open field and press the corresponding button</h3>
+        <h3>3.) You will be prompted by MetaMask to verify the transaction - do so and the data will be send to the blockchain</h3>
+        <h3>4.) Open the Console to view the transaction details</h3>
+        <h3>5.) Once the tx details have been returned and viewed, press the 'refresh' button on your browser and watch the aggregate amount reflect accordingly</h3>
+        <input type="text" id="amount">
+        
+        <p id="balance"></p>
+        <button id="deposit" class="col-lg-2 control-label">Deposit</button>
+        <button id="withdraw" class="col-lg-2 control-label">Withdraw</button>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    
+
+    <script>
+        var contract;
+
+        $(document).ready(function() {
+            web3 = new Web3(web3.currentProvider);
+
+            var address = "0x79fef8c7d514add2a62d5962ecf68bfc62eb2580";
+            var abi = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "amt",
+				"type": "int256"
+			}
+		],
+		"name": "deposit",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "amt",
+				"type": "int256"
+			}
+		],
+		"name": "withdraw",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+
+            contract = new web3.eth.Contract(abi, address);
+
+            contract.methods.getBalance().call().then(function(balance) {
+                $('#balance').html(balance);
+            })
+        })
+                $('#deposit').click(function() {
+                    var amt = 0;
+                    amt = parseInt($('#amount').val());
+
+                    web3.eth.getAccounts().then(function(accounts) {
+                        var acc = accounts[0];
+                        return contract.methods.deposit(amt).send({from: acc});
+                    }).then(function(tx) {
+                        console.log(tx);
+                    }).catch(function(tx) {
+                        console.log(tx);
+                    })
+                })
+
+                $('#withdraw').click(function() {
+                    var amt = 0;
+                    amt = parseInt($('#amount').val());
+
+                    web3.eth.getAccounts().then(function(accounts) {
+                        var acc = accounts[0];
+                        return contract.methods.withdraw(amt).send({from: acc});
+                    }).then(function(tx) {
+                        console.log(tx);
+                    }).catch(function(tx) {
+                        console.log(tx);
+                    })
+                })
+    
+    </script>
+
+
+</body>
+</html>
