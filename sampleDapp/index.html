@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" type="text/css" href="main.css">
     
-    <script src ="./dapp-eth/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
 
 
 </head>
@@ -41,7 +41,7 @@
         web3.eth.defaultAccount = web3.eth.accounts[0];
 
         //Set Contract Abi
-        var contractAbi = [
+        var contractAbi = web3.eth.contract([
 	{
 		"constant": true,
 		"inputs": [],
@@ -78,17 +78,17 @@
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-];
+]);
         
         //Set Contract Address
-        var contractAddress = '0x0e53df94ff7b0e6c1977825b071f38a21248cbcd';
+        var mycontract = contractAbi.at('0x0e53df94ff7b0e6c1977825b071f38a21248cbcd');
         
         //Set Contract
-         new web3.eth.Contract(contractAbi,[contractAddress]);
+         new web3.eth.Contract(contractAbi,contractAddress);
         
         //var memberLookupContract = new web3.eth.Contract([{"constant":true,"inputs":[],"name":"getMember","outputs":[{"name":"","type":"uint256"},{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_age","type":"uint256"},{"name":"_name","type":"string"}],"name":"setMember","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}], '0x0e53df94ff7b0e6c1977825b071f38a21248cbcd');
         
-        contract.getMember(function(error, result) {
+        mycontract.getMember(function(error, result) {
         if(!error) {
             $("#member").html(result[0]+' ('+result[1]+' years old)');
         } else
